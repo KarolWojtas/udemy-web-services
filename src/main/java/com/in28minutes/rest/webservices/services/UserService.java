@@ -1,13 +1,11 @@
 package com.in28minutes.rest.webservices.services;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.function.Supplier;
+import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Service;
 
 import com.in28minutes.rest.webservices.entities.User;
-import com.in28minutes.rest.webservices.exceptions.ResourceNotFoundException;
 import com.in28minutes.rest.webservices.repositories.UserRepository;
 
 @Service
@@ -28,6 +26,15 @@ public class UserService implements UserServiceInterface{
 	public List<User> findAllUsers() {
 		
 		return userRepository.findAll();
+	}
+	@Override
+	public User deleteUser(Long id) {
+		User deletedUser = userRepository.findById(id).orElseThrow(
+					()->new NoSuchElementException("No user with id: "+id+" found")
+				);
+		userRepository.delete(deletedUser);
+		return deletedUser;
+		
 	}
 	
 }

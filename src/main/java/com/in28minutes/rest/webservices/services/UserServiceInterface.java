@@ -7,4 +7,5 @@ public interface UserServiceInterface {
 	public User saveUser(User user);
 	public User findUser(Long id);
 	public List<User> findAllUsers();
+	public User deleteUser(Long id);
 }
