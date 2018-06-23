@@ -8,4 +8,5 @@ public interface UserServiceInterface {
 	public User findUser(Long id);
 	public List<User> findAllUsers();
 	public User deleteUser(Long id);
+	public void saveAllUsers(User ...users);
 }

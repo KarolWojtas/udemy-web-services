@@ -2,7 +2,10 @@ package com.in28minutes.rest.webservices.services;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
+import org.assertj.core.util.Arrays;
 import org.springframework.stereotype.Service;
 
 import com.in28minutes.rest.webservices.entities.User;
@@ -34,6 +37,12 @@ public class UserService implements UserServiceInterface{
 				);
 		userRepository.delete(deletedUser);
 		return deletedUser;
+		
+	}
+	@Override
+	public void saveAllUsers(User... users) {
+		Stream.of(users).filter(user -> !user.getName().equals(null))
+					.forEach(userRepository::save);
 		
 	}
 	

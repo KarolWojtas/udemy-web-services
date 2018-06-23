@@ -23,6 +23,13 @@ public class DataBootstrap implements CommandLineRunner{
 				.build();
 		user1.setBirthDateFromLocalDate(LocalDate.of(1991, 8, 21));
 		userService.saveUser(user1);
+		User user2 = new User();
+		user2.setName("Henryk");
+		user2.setBirthDateFromLocalDate(LocalDate.of(2016, 5, 12));
+		User user3 = new User();
+		user3.setName("Magda");
+		user3.setBirthDateFromLocalDate(LocalDate.of(1991, 4, 3));
+		userService.saveAllUsers(user1,user2,user3);
 		
 		
 	}
