@@ -40,12 +40,12 @@ public class CustomExceptionHandler{
 				.collect(Collectors.joining("; "));
 		return new ExceptionResponse(LocalDate.now(), body, request.getDescription(true));
 	}
-	@ExceptionHandler(Exception.class)
+	/*@ExceptionHandler(Exception.class)
 	@ResponseStatus(value=HttpStatus.INTERNAL_SERVER_ERROR)
 	public ExceptionResponse handleAllExceptions(Exception e , WebRequest request) {
 		ExceptionResponse response = new ExceptionResponse(LocalDate.now(), e.getMessage(), request.getDescription(false));
 		return response;
-	}
+	}*/
 	
 
 	

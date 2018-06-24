@@ -24,7 +24,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.in28minutes.rest.webservices.entities.Post;
 import com.in28minutes.rest.webservices.entities.User;
+import com.in28minutes.rest.webservices.services.PostService;
+import com.in28minutes.rest.webservices.services.PostServiceInterface;
 import com.in28minutes.rest.webservices.services.UserServiceInterface;
 
 import io.swagger.annotations.ApiOperation;
@@ -35,10 +38,12 @@ import springfox.documentation.swagger.readers.operation.ResponseHeaders;
 @RestController
 public class UserResource {
 	private UserServiceInterface userService;
-	@Autowired
-	public UserResource(UserServiceInterface userService) {
+	private PostServiceInterface postService;
+	
+	public UserResource(UserServiceInterface userService, PostServiceInterface postService) {
 		super();
 		this.userService = userService;
+		this.postService = postService;
 	}
 	@ApiOperation(value="Get all users")
 	@GetMapping(value="/users", produces= {"application/json","application/xml"})
@@ -69,5 +74,17 @@ public class UserResource {
 	public ResponseEntity<Void> deleteUser(@PathVariable String id){
 		userService.deleteUser(Long.valueOf(id));
 		return ResponseEntity.noContent().build();
+	}
+	@GetMapping("/users/{userId}/posts")
+	public List<Post> getAllPostByUser(@PathVariable String userId){
+		return postService.getAllPosts(Long.valueOf(userId));
+	}
+	@PostMapping("/users/{userId}/posts")
+	public Resource<Post> savePost(@PathVariable String userId, @RequestBody Post post) {
+		Post savedPost =  postService.savePost(post, Long.valueOf(userId));
+		Resource<Post> resource = new Resource<Post>(savedPost);
+		Link linkToAll = linkTo(methodOn(this.getClass()).getAllPostByUser(userId)).withRel("all-posts");
+		resource.add(linkToAll);
+		return resource;
 	}
 }
